@@ -8,10 +8,10 @@ from openpyxl.cell.cell import MergedCell, Cell
 # python
 import string
 import datetime, time
-#import xlsxwriter
+# import xlsxwriter
 
 ### ROOT
-##  --> cd D:\Disk_c\Desktop\VPR <--
+##  ---> cd D:\Disk_c\Desktop\VPR <---
 
 def parse_string(*args, **kwargs):
     '''
