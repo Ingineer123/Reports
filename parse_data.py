@@ -32,23 +32,23 @@ def parse_string(*args, **kwargs):
     ## NOTE: PRESS Ctrl+/ (Ctrl+K+U) TO UNCOMMENT THE CODE TO CALCULATE RT:
     # registry = 'Реєстр Укртатнафта Jet A-1.xlsx'
     # reestr_lsx_file = Path(
-    #     'D:\Disk_c\Desktop\VPR\Reports',
+    #     'D:\Disk_c\Desktop\VPR',
     #     'Реєстр Укртатнафта Jet A-1.xlsx')
     
     # report = 'Звіт Jet A-1.xlsx'
-    # oblik_lsx_file = Path('D:\Disk_c\Desktop\VPR\Reports', report)
+    # oblik_lsx_file = Path('D:\Disk_c\Desktop\VPR', report)
 
      ################################# *** RT ***   ##################################
      ## RT NOTE: PRESS Ctrl+/ (Ctrl+K+U) TO UNCOMMENT THE CODE TO CALCULATE JET-A1:
     registry = 'Реєстр Укртатнафта РТ.xlsx'
     reestr_lsx_file = Path(
-        'D:\Disk_c\Desktop\VPR\Reports',
+        'D:\Disk_c\Desktop\VPR',
         'Реєстр Укртатнафта РТ.xlsx')
 
     # RT
     report = 'Звіт РТ.xlsx'
     oblik_lsx_file = Path(
-        'D:\Disk_c\Desktop\VPR\Reports',
+        'D:\Disk_c\Desktop\VPR',
         'Звіт РТ.xlsx')
     #####################################################################################
 
