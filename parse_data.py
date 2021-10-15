@@ -11,7 +11,6 @@ import datetime, time
 # import xlsxwriter
 
 ### ROOT
-##  ---> cd D:\Disk_c\Desktop\VPR <---
 
 def parse_string(*args, **kwargs):
     '''
