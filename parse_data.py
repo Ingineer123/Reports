@@ -11,7 +11,7 @@ import datetime, time
 # import xlsxwriter
 
 ### ROOT
-##  ---> cd D:\Disk_c\Desktop\VPR\Reports <---
+##  ---> cd D:\Disk_c\Desktop\VPR <---
 
 def parse_string(*args, **kwargs):
     '''
@@ -33,7 +33,7 @@ def parse_string(*args, **kwargs):
     # registry = 'Реєстр Укртатнафта Jet A-1.xlsx'
     # reestr_lsx_file = Path(
     #     'D:\Disk_c\Desktop\VPR',
-    #     'Реєстр Укртатнафта Jet A-1.xlsx')
+    #     registry)
     
     # report = 'Звіт Jet A-1.xlsx'
     # oblik_lsx_file = Path('D:\Disk_c\Desktop\VPR', report)
@@ -41,9 +41,10 @@ def parse_string(*args, **kwargs):
      ################################# *** RT ***   ##################################
      ## RT NOTE: PRESS Ctrl+/ (Ctrl+K+U) TO UNCOMMENT THE CODE TO CALCULATE JET-A1:
     registry = 'Реєстр Укртатнафта РТ.xlsx'
+    'Реєстр Укртатнафта РТ.xlsx'
     reestr_lsx_file = Path(
         'D:\Disk_c\Desktop\VPR',
-        'Реєстр Укртатнафта РТ.xlsx')
+        registry)
 
     # RT
     report = 'Звіт РТ.xlsx'
@@ -73,7 +74,9 @@ def parse_string(*args, **kwargs):
     ## convert lambda function for date convert- ---> allows to convert date's if sheet was changed
     ## NOTE: remake this fucntion after beacuse if the cell is not a timedatae format it'll raise an error
     ## to an appropriate format: '%Y-%m-%d'
-    converted = lambda date: datetime.date.strftime(date, '%Y-%m-%d')
+    converted = lambda date: datetime.date.strftime(
+        date, '%Y-%m-%d'
+    )
     
     
     ########################## *** get  report's date block ***    ##########################
@@ -81,7 +84,10 @@ def parse_string(*args, **kwargs):
     # today = datetime.date.today() ## 2021-07-24 <class 'datetime.date'>
 
     ## NOTE: COMMENT THIS BLOCK IF U WANT TO REMOVE DATE INPUT
-    print('Введіть дату на котру хочете зробити звіт в ФОРМАТІ \'DD-MM-YYYY\'')
+    print(
+        f'Введіть дату на котру хочете зробити звіт \
+в ФОРМАТІ \'DD-MM-YYYY\''
+    )
     time.sleep(1)
     print('Для прикладу: 01-01-2021')
     time.sleep(1)
@@ -102,12 +108,19 @@ def parse_string(*args, **kwargs):
     print('.')
 
     try:
-        get_raw_time = time.strptime(user_input_time, '%d-%m-%Y')
-        get_time = datetime.date(*get_raw_time[0:3])            # <class 'datetime.date'>
+        get_raw_time = time.strptime(
+            user_input_time, '%d-%m-%Y'
+        )
+        get_time = datetime.date(
+            *get_raw_time[0:3]
+        )           
+        # <class 'datetime.date'>
         today = get_time
     
     except ValueError as input_err:
-        print('Отакої, щось ти не те натайпав (」°ロ°)')
+        print(
+            'Отакої, щось ти не те натайпав (」°ロ°)'
+        )
         pass
 
     ##########################################################################################
@@ -115,33 +128,42 @@ def parse_string(*args, **kwargs):
     #  --> remake to a the LC later
     items = dict([])
 
-    for i in range(1, len(reestr_sheet['L'])+1):
-        condition = reestr_sheet[f'L{i}'].value != None
-        if condition:
-            items[reestr_sheet[f'L{i}'].value.lower()] = []
+    try:
+        error_empty_cell  = f'Possible error is that a CELL IS EMPTY. CHECK THE {registry}'
+        for i in range(1, len(reestr_sheet['L'])+1):
+            condition = reestr_sheet[f'L{i}'].value != None
+            if condition:
+                items[reestr_sheet[f'L{i}'].value.lower()] = []
 
-    ## iterate through reestr sheet cells and get filter by todays date
-    for i in range(1, len(reestr_sheet['A'])+1):
-        
-        ## avoid errors when iterating blanc fields
-        condition = reestr_sheet[f'A{i}'].value != None
+        ## iterate through reestr sheet cells and get filter by todays date
+        for i in range(1, len(reestr_sheet['A'])+1):
+            
+            ## avoid errors when iterating blanc fields
+            condition = reestr_sheet[f'A{i}'].value != None
 
-        ## use this condition to raise date_error and render to a window of errors
-        ## whnen incorrect date was put or wrong format 
-        condition2 = isinstance(reestr_sheet[f'A{i}'].value, datetime.date) 
-        
-        if condition:
-            filter_by_date_cells = list(filter(
-                lambda item: str(item.value)[:10] == converted(today), reestr_sheet[i]
+            ## use this condition to raise date_error and render to a window of errors
+            ## whnen incorrect date was put or wrong format 
+            condition2 = isinstance(
+                reestr_sheet[f'A{i}'].value, datetime.date
+            ) 
+            
+            if condition:
+                filter_by_date_cells = list(filter(
+                    lambda item: str(item.value)[:10] == converted(today), reestr_sheet[i]
                 ))
-        
-            if any(filter_by_date_cells):
-                
-                ## this condition will avoid adding Nones to nested dict values
-                ## avoid: TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'
-                not_nones_cells = reestr_sheet[f'L{i}'].value != None and reestr_sheet[f'F{i}'].value != None 
-                items[reestr_sheet[f'L{i}'].value.lower()].append(reestr_sheet[f'F{i}'].value) if not_nones_cells else 0
+            
+                if any(filter_by_date_cells):
                     
+                    ## this condition will avoid adding Nones to nested dict values
+                    ## avoid: TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'
+                    not_nones_cells = reestr_sheet[f'L{i}'].value is not None # and reestr_sheet[f'F{i}'].value != None 
+                    items[reestr_sheet[f'L{i}'].value.lower()].append(
+                        reestr_sheet[f'F{i}'].value
+                    ) if not_nones_cells else 0
+
+    except AttributeError as err:
+        print(error_empty_cell, end=" ")
+        
     ## getting collected amount values from sheet reestr by carrier
     ## returns dict with the next data: key - carrier, value - daily amount in kgs
     def add_amounts(items):
@@ -166,7 +188,9 @@ def parse_string(*args, **kwargs):
             ## condition willl avoid exceptions
             ##  when using blank cell as a key 
             condition4 = carrier_cell.value is not None
-            record_value = items.get(str(carrier_cell.value).lower()) if condition4 else 0
+            record_value = items.get(
+                str(carrier_cell.value).lower()
+            ) if condition4 else 0
             
             ## iteration should be in this block 
             ## as we need to get all indices of cells and sort only those
@@ -182,7 +206,9 @@ def parse_string(*args, **kwargs):
     
     ## input fuel arrival:
     try:
-        fuel_arrived = int(input('Введіть надходження палива, кг: '))
+        fuel_arrived = int(
+            input('Введіть надходження палива, кг: ')
+        )
         i = 0
         for cell in oblik_sheet[f'C']:
             i += 1
